@@ -4,7 +4,7 @@ import { Card } from "./BookCard.styles";
 import { BookCardProps } from "./BooksCard.types";
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
-  const { title, authors, download_count, formats } = book;
+  const { authors, download_count, formats, title } = book;
 
   return (
     <Card>

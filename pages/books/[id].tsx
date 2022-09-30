@@ -4,7 +4,7 @@ import { getBook, getBooks } from "../../api/books";
 import Book from "../../components/Book";
 
 const BookPage = ({ book }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return <Book book={book} />;
+  return <>{book && <Book book={book} />}</>;
 };
 
 export default BookPage;

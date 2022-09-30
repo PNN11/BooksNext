@@ -18,8 +18,8 @@ const Book: React.FC<BookProps> = ({ book }) => {
         <BookCard book={book} />
         <div>
           <h3>Subjects</h3>
-          {book.subjects.map((subject) => (
-            <p>{subject}</p>
+          {book?.subjects.map((subject) => (
+            <p key={subject}>{subject}</p>
           ))}
         </div>
       </BookWrapper>

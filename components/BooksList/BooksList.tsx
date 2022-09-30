@@ -6,26 +6,23 @@ import { getBooks } from "../../api/books";
 import BookCard from "../BookCard";
 import Input from "../Input";
 import { Filter, ListWrapper, StyledLink, Wrapper } from "./Books.list.styles";
-import { LanguagesType } from "./BooksList.types";
 
 const BooksList = () => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [languages, setLanguages] = useState<LanguagesType>({
-    en: false,
-    ru: false,
-    fr: false,
-  });
+  const [en, setEn] = useState<string | null>(null);
+  const [ru, setRu] = useState<string | null>(null);
+  const [fr, setFr] = useState<string | null>(null);
 
-  const selectLangs = (langs: LanguagesType) => {
+  const selectLangs = (arr: (string | null)[]) => {
     const arrLangs: string[] = [];
-    Object.keys(langs).forEach((lang) => {
-      if (langs[lang]) arrLangs.push(lang);
+    arr.forEach((lang) => {
+      lang && arrLangs.push(lang);
     });
     return arrLangs.length ? arrLangs.join(",") : null;
   };
 
   const { data, error } = useSWR(
-    [`https://gutendex.com/books`, searchValue, selectLangs(languages)],
+    [`https://gutendex.com/books`, searchValue, selectLangs([en, ru, fr])],
     getBooks
   );
 
@@ -33,8 +30,14 @@ const BooksList = () => {
     setSearchValue(e.target.value);
   };
 
-  const handleChangeLanguages = (e: ChangeEvent<HTMLInputElement>) => {
-    setLanguages({ ...languages, [e.target.name]: !languages[e.target.name] });
+  const handleChangeEnLanguage = (e: ChangeEvent<HTMLInputElement>) => {
+    en === "en" ? setEn(null) : setEn("en");
+  };
+  const handleChangeRuLanguage = (e: ChangeEvent<HTMLInputElement>) => {
+    ru === "ru" ? setRu(null) : setRu("ru");
+  };
+  const handleChangeFrLanguage = (e: ChangeEvent<HTMLInputElement>) => {
+    fr === "fr" ? setFr(null) : setFr("fr");
   };
 
   return (
@@ -42,28 +45,28 @@ const BooksList = () => {
       <Filter>
         <div>
           <Input
-            checked={languages.ru}
+            checked={!!ru}
             name="ru"
             type="checkbox"
             label="RU"
             id="ru_lang"
-            onChange={handleChangeLanguages}
+            onChange={handleChangeRuLanguage}
           />
           <Input
-            checked={languages.en}
+            checked={!!en}
             name="en"
             type="checkbox"
             label="EN"
             id="en_lang"
-            onChange={handleChangeLanguages}
+            onChange={handleChangeEnLanguage}
           />
           <Input
-            checked={languages.fr}
+            checked={!!fr}
             name="fr"
             type="checkbox"
             label="FR"
             id="fr_lang"
-            onChange={handleChangeLanguages}
+            onChange={handleChangeFrLanguage}
           />
         </div>
         <Input
